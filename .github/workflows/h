@@ -1,0 +1,22 @@
+name: Send PR Summary to Slack (Curl)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *'  # Every day at 8:00 AM
+
+jobs:
+  send_summary:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: List pull request titles
+      id: list
+      uses: jkisk/list-open-pulls@v1.0.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        owner: osnatashush
+        repo: osnat-test
+    - name: Check output
+      run: echo ${{ steps.list.outputs.titles }} 
